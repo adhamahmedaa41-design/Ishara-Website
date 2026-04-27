@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+.env
+.env.local
+.vercel
+server/uploads/*
+!server/uploads/.gitkeep
+server/.env
+.DS_Store
+*.log
