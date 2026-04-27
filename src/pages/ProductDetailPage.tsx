@@ -6,6 +6,7 @@ import { getProduct, type Product, type ProductFeature, type ProductSpec } from 
 import { useApp } from '../components/AppProviders';
 import { useCart } from '../context/CartContext';
 import { formatEGP } from '../lib/formatCurrency';
+import { ReviewList } from '../components/reviews/ReviewList';
 
 /* ── Fallback catalogue ── */
 const FALLBACK_CATALOG: Record<string, Product> = {
@@ -279,6 +280,13 @@ export default function ProductDetailPage() {
             </div>
           </section>
         )}
+
+        {/* Reviews */}
+        <ReviewList
+          slug={product.slug}
+          initialAvg={product.ratingAvg}
+          initialCount={product.ratingCount}
+        />
       </div>
     </main>
   );
