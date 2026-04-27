@@ -8,9 +8,14 @@ const User = require("../models/User");
 // FIX: Import authMiddleware correctly - it exports { authMiddleware }
 const { authMiddleware } = require("../middleware/authMiddleware");
 
-const uploadsDir = "./uploads";
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
+// On Vercel, the only writable location is /tmp (and uploads don't persist).
+const uploadsDir = process.env.VERCEL ? "/tmp/uploads" : "./uploads";
+try {
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+} catch (err) {
+    console.warn("Could not create uploads dir:", err.message);
 }
 
 const storage = multer.diskStorage({

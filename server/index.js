@@ -20,10 +20,14 @@ const sosRoutes = require("./Routes/sosRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Ensure uploads directory exists
-const uploadsDir = "./uploads";
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+// Ensure uploads directory exists. On Vercel only /tmp is writable.
+const uploadsDir = process.env.VERCEL ? "/tmp/uploads" : "./uploads";
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+} catch (err) {
+  console.warn("Could not create uploads dir:", err.message);
 }
 
 // REMOVED: Duplicate multer config - using the one from upload.js instead
