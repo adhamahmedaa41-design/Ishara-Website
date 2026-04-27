@@ -59,13 +59,27 @@ app.use(express.json());
 let corsOrigin = "*";
 try {
   const isProd = JSON.parse(process.env.PRODUCTION_ORIGIN || "false");
-  corsOrigin = isProd ? process.env.CLIENT_ORIGIN : "*";
+  if (isProd) {
+    // Accept the configured CLIENT_ORIGIN plus any preview deploys of the frontend project on Vercel.
+    const allowed = (process.env.CLIENT_ORIGIN || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    corsOrigin = (origin, cb) => {
+      if (!origin) return cb(null, true); // server-to-server / curl
+      if (allowed.includes(origin)) return cb(null, true);
+      if (/^https:\/\/ishara-website[\w-]*\.vercel\.app$/.test(origin)) {
+        return cb(null, true);
+      }
+      cb(new Error("Not allowed by CORS: " + origin));
+    };
+  }
 } catch (err) {
   console.warn(
     "PRODUCTION_ORIGIN env variable is not valid JSON. Defaulting to *."
   );
 }
-app.use(cors({ origin: corsOrigin }));
+app.use(cors({ origin: corsOrigin, credentials: true }));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
