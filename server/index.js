@@ -69,6 +69,23 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// On Vercel (serverless), ensure DB is connected before handling each request.
+// The connection is cached across warm invocations by mongoose itself.
+if (process.env.VERCEL) {
+  let dbReady = null;
+  app.use(async (req, res, next) => {
+    try {
+      if (!dbReady) dbReady = connectDB();
+      await dbReady;
+      next();
+    } catch (err) {
+      dbReady = null;
+      console.error("DB connection error:", err.message);
+      res.status(500).json({ message: "Database connection failed" });
+    }
+  });
+}
+
 // Debug middleware loading
 console.log("=== DEBUG: Checking authMiddleware ===");
 try {
@@ -146,14 +163,20 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// Start server only after DB is connected (fixes internal server errors on first requests)
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+// In serverless (Vercel), we don't call app.listen — the platform handles it
+// and the api/index.js wrapper takes care of the DB connection.
+// Locally, start the server normally after DB is connected.
+if (!process.env.VERCEL) {
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error("DB connection error:", err.message);
+      process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.error("DB connection error:", err.message);
-    process.exit(1);
-  });
+}
+
+module.exports = app;
