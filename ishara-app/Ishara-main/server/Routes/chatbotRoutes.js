@@ -49,6 +49,43 @@ router.post("/ask", authMiddleware, async (req, res) => {
     }
 });
 
+// Public endpoint for the website chat widget (no auth required)
+router.post("/public-ask", async (req, res) => {
+    try {
+        const { messages = [] } = req.body;
+        const last = (messages[messages.length - 1]?.content || "").toLowerCase();
+        const apiKey = process.env.GEMINI_API_KEY;
+
+        if (!apiKey) {
+            // No Gemini key — use smart rule-based FAQ
+            return res.json({ reply: ruleBased(last), source: "local" });
+        }
+
+        // Build conversation history for Gemini
+        const contents = messages.map((m) => ({
+            role: m.role === "assistant" ? "model" : "user",
+            parts: [{ text: m.content }],
+        }));
+        const body = {
+            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents,
+            generationConfig: { temperature: 0.5, maxOutputTokens: 1024 },
+        };
+        const r = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }
+        );
+        const data = await r.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        if (!text) {
+            return res.json({ reply: ruleBased(last), source: "local-fallback" });
+        }
+        res.json({ reply: text, source: "gemini" });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+});
+
 function isArabic(q) {
     return /[\u0600-\u06FF]/.test(q);
 }
