@@ -1,0 +1,33 @@
+description: Ultralytics best model trained on data\egp_currency_v1\data.yaml
+author: Ultralytics
+date: '2026-04-30T10:07:43.675696'
+version: 8.4.43
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 416
+- 416
+names:
+  0: 10 EGP front
+  1: 5 EGP back
+  2: 50 EGP back
+  3: 10 EGP back
+  4: 100 EGP front
+  5: 20 EGP back
+  6: 200 EGP front
+  7: 200 EGP back
+  8: 50 EGP front
+  9: 20 EGP front
+  10: 5 EGP front
+  11: 100 EGP back
+args:
+  batch: 1
+  fraction: 1.0
+  half: true
+  int8: false
+  nms: true
+channels: 3
+end2end: false

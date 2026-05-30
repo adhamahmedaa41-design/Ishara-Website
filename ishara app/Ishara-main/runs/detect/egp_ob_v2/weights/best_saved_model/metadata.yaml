@@ -1,0 +1,27 @@
+description: Ultralytics best model trained on data\egp_ob\data.yaml
+author: Ultralytics
+date: '2026-05-17T21:31:23.836463'
+version: 8.4.43
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 512
+- 512
+names:
+  0: 100Egp
+  1: 10Egp
+  2: 200Egp
+  3: 20Egp
+  4: 50Egp
+  5: 5Egp
+args:
+  batch: 1
+  fraction: 1.0
+  half: true
+  int8: false
+  nms: true
+channels: 3
+end2end: false

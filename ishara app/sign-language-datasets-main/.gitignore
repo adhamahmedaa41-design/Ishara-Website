@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache
+
+# local dataset files
+sign_recordings
+
+# project configurtion
+.vscode
+
+# other
+temp/
+temp-*
+temp_*
+temp.*
+.DS_Store

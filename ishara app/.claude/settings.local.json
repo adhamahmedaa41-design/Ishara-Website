@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep *)",
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(flutter pub *)",
+      "Bash(flutter analyze *)",
+      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\Arduino15\\\\packages\\\\esp32\\\\hardware\\\\esp32\\\\\" -ErrorAction SilentlyContinue | Select-Object Name)",
+      "Bash(timeout 30 node -e ' *)",
+      "Bash(mkdir -p Ishara-main/assets/wlasl)"
+    ]
+  }
+}

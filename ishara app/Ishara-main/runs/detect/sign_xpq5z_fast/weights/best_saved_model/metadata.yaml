@@ -1,0 +1,141 @@
+description: Ultralytics best model trained on data\signs_xpq5z\data.yaml
+author: Ultralytics
+date: '2026-05-11T00:09:10.783600'
+version: 8.4.43
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 320
+- 320
+names:
+  0: A
+  1: B
+  2: C
+  3: D
+  4: E
+  5: F
+  6: G
+  7: H
+  8: I
+  9: J
+  10: K
+  11: L
+  12: M
+  13: N
+  14: O
+  15: P
+  16: Q
+  17: R
+  18: S
+  19: T
+  20: U
+  21: V
+  22: W
+  23: X
+  24: Y
+  25: Z
+  26: additional
+  27: alcohol
+  28: allergy
+  29: bacon
+  30: bad
+  31: bag
+  32: barbecue
+  33: bill
+  34: biscuit
+  35: bitter
+  36: bread
+  37: burger
+  38: bye
+  39: cake
+  40: cash
+  41: cheese
+  42: chicken
+  43: coke
+  44: cold
+  45: correct
+  46: cost
+  47: coupon
+  48: credit card
+  49: cup
+  50: dessert
+  51: don-t want
+  52: drink
+  53: drive
+  54: eat
+  55: eggs
+  56: enjoy
+  57: fine
+  58: forget
+  59: fork
+  60: french fries
+  61: fresh
+  62: go
+  63: hello
+  64: help
+  65: hot
+  66: icecream
+  67: ingredients
+  68: juicy
+  69: ketchup
+  70: lactose
+  71: lettuce
+  72: lid
+  73: like
+  74: manager
+  75: menu
+  76: milk
+  77: more
+  78: mustard
+  79: napkin
+  80: need
+  81: 'no'
+  82: not
+  83: order
+  84: pepper
+  85: pickle
+  86: pizza
+  87: please
+  88: ready
+  89: receipt
+  90: refill
+  91: repeat
+  92: safe
+  93: salt
+  94: sandwich
+  95: sauce
+  96: small
+  97: soda
+  98: sorry
+  99: spicy
+  100: spoon
+  101: straw
+  102: sugar
+  103: sweet
+  104: thank-you
+  105: tissues
+  106: tomato
+  107: total
+  108: urgent
+  109: vegetables
+  110: wait
+  111: want
+  112: warm
+  113: water
+  114: what
+  115: would
+  116: wrong
+  117: 'yes'
+  118: yoghurt
+  119: your
+args:
+  batch: 1
+  fraction: 1.0
+  half: true
+  int8: false
+  nms: true
+channels: 3
+end2end: false

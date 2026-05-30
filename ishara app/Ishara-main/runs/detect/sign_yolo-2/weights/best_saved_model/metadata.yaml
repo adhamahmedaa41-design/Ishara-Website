@@ -1,0 +1,31 @@
+description: Ultralytics best model trained on data\arabic_signs\data.yaml
+author: Ultralytics
+date: '2026-04-30T00:02:09.529399'
+version: 8.4.43
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 416
+- 416
+names:
+  0: Fine
+  1: Hello
+  2: Love
+  3: Mother
+  4: 'No'
+  5: Smile
+  6: Sorry
+  7: Thanks
+  8: 'Yes'
+  9: You
+args:
+  batch: 1
+  fraction: 1.0
+  half: true
+  int8: false
+  nms: true
+channels: 3
+end2end: false
