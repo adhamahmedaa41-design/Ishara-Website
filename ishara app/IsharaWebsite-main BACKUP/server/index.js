@@ -6,6 +6,7 @@ const rateLimit = require("express-rate-limit");
 const multer = require("multer");
 const fs = require("fs");
 const profileRoutes = require("./Routes/usersRoutes");
+const chatbotRoutes = require("./Routes/chatbotRoutes");
 const connectDB = require("./config/dbConfig");
 const authRoutes = require("./Routes/authRoutes");
 const contactRoutes = require("./Routes/contactRoutes");
@@ -156,6 +157,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(uploadsDir));
 
 app.use("/api/users", profileRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Server is running 🟢" });

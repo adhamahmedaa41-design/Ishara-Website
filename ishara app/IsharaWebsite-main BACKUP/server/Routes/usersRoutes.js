@@ -1,24 +1,77 @@
 const express = require("express");
 const router = express.Router();
+const Joi = require("joi");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const User = require("../models/User");
+const {
+    isCloudinaryConfigured,
+    uploadAvatarToCloudinary,
+    uploadAvatarBufferToCloudinary,
+} = require("../utils/cloudinary");
+const { resolvePublicUrl } = require("../utils/urlUtils");
 
 // FIX: Import authMiddleware correctly - it exports { authMiddleware }
 const { authMiddleware } = require("../middleware/authMiddleware");
 
-// On Vercel, the only writable location is /tmp (and uploads don't persist).
-const uploadsDir = process.env.VERCEL ? "/tmp/uploads" : "./uploads";
-try {
-    if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-} catch (err) {
-    console.warn("Could not create uploads dir:", err.message);
+function buildUserResponse(req, user) {
+    return {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone || "",
+        role: user.role,
+        isVerified: user.isVerified,
+        profilePic: resolvePublicUrl(req, user.profilePic),
+        bio: user.bio,
+        disabilityType: user.disabilityType,
+        emergencyContacts: user.emergencyContacts,
+        preferences: user.preferences,
+        socialLinks: user.socialLinks || {},
+        accessibilityPrefs: user.accessibilityPrefs || {},
+    };
 }
 
-const storage = multer.diskStorage({
+function buildEmergencyContactResponse(contact) {
+    return {
+        id: contact._id,
+        name: contact.name,
+        phone: contact.phone,
+        relationship: contact.relationship,
+        app: contact.app || "all",
+        priority: contact.priority || 0,
+        telegramChatId: contact.telegramChatId || "",
+    };
+}
+
+const emergencyContactSchema = Joi.object({
+    name: Joi.string().trim().min(2).max(100).required(),
+    phone: Joi.string().trim().min(5).max(30).required(),
+    relationship: Joi.string().trim().max(80).allow("").default(""),
+    app: Joi.string().valid("whatsapp", "telegram", "sms", "all").default("all"),
+    priority: Joi.number().integer().min(0).max(100).default(0),
+    telegramChatId: Joi.string().trim().max(80).allow("").default(""),
+});
+
+const emergencyContactUpdateSchema = Joi.object({
+    name: Joi.string().trim().min(2).max(100),
+    phone: Joi.string().trim().min(5).max(30),
+    relationship: Joi.string().trim().max(80).allow(""),
+    app: Joi.string().valid("whatsapp", "telegram", "sms", "all"),
+    priority: Joi.number().integer().min(0).max(100),
+    telegramChatId: Joi.string().trim().max(80).allow(""),
+}).min(1);
+
+const uploadsDir = process.env.VERCEL
+    ? path.join("/tmp", "ishara-uploads")
+    : path.join(__dirname, "..", "uploads");
+
+if (!isCloudinaryConfigured && !fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const localDiskStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadsDir);
     },
@@ -45,7 +98,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-    storage: storage,
+    storage: isCloudinaryConfigured ? multer.memoryStorage() : localDiskStorage,
     limits: { fileSize: 2 * 1024 * 1024 },
     fileFilter: fileFilter,
 });
@@ -73,28 +126,35 @@ router.put(
                 });
             }
 
-            const avatarPath = `/uploads/${req.file.filename}`;
+            let avatarPath;
+
+            if (isCloudinaryConfigured) {
+                if (req.file.buffer) {
+                    const uploaded = await uploadAvatarBufferToCloudinary(req.file.buffer, req.user.id);
+                    avatarPath = uploaded.secure_url;
+                } else {
+                    const uploaded = await uploadAvatarToCloudinary(req.file.path, req.user.id);
+                    avatarPath = uploaded.secure_url;
+                    fs.unlink(req.file.path, () => {});
+                }
+            } else {
+                if (process.env.VERCEL) {
+                    return res.status(503).json({
+                        success: false,
+                        message: "Avatar upload requires Cloudinary in Vercel deployment",
+                    });
+                }
+                avatarPath = resolvePublicUrl(req, `/uploads/${req.file.filename}`);
+            }
+
             user.profilePic = avatarPath;
             await user.save();
-
-            const userResponse = {
-                id: user._id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                isVerified: user.isVerified,
-                profilePic: user.profilePic,
-                bio: user.bio,
-                disabilityType: user.disabilityType,
-                emergencyContacts: user.emergencyContacts,
-                preferences: user.preferences,
-            };
 
             return res.json({
                 success: true,
                 message: "Profile picture updated successfully",
                 avatar: avatarPath,
-                user: userResponse,
+                user: buildUserResponse(req, user),
             });
         } catch (error) {
             console.error("Avatar update error:", error);
@@ -156,23 +216,10 @@ router.put("/update-profile", authMiddleware, async (req, res) => {
 
         await user.save();
 
-        const userResponse = {
-            id: user._id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-            isVerified: user.isVerified,
-            profilePic: user.profilePic,
-            bio: user.bio,
-            disabilityType: user.disabilityType,
-            emergencyContacts: user.emergencyContacts,
-            preferences: user.preferences,
-        };
-
         return res.json({
             success: true,
             message: "Profile updated successfully",
-            user: userResponse,
+            user: buildUserResponse(req, user),
         });
     } catch (error) {
         console.error("Profile update error:", error);
@@ -200,18 +247,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
 
         return res.json({
             success: true,
-            user: {
-                id: user._id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                isVerified: user.isVerified,
-                profilePic: user.profilePic,
-                bio: user.bio,
-                disabilityType: user.disabilityType,
-                emergencyContacts: user.emergencyContacts,
-                preferences: user.preferences,
-            },
+            user: buildUserResponse(req, user),
         });
     } catch (error) {
         console.error("Get profile error:", error);
@@ -243,7 +279,7 @@ router.get("/profile/:userId", async (req, res) => {
                 id: user._id,
                 name: user.name,
                 bio: user.bio,
-                profilePic: user.profilePic,
+                profilePic: resolvePublicUrl(req, user.profilePic),
                 disabilityType: user.disabilityType,
             },
         });
@@ -257,187 +293,167 @@ router.get("/profile/:userId", async (req, res) => {
     }
 });
 
-// ─── Emergency contacts CRUD (used by the Flutter app) ────────────────────
-//
-// All endpoints below operate on the authenticated user's
-// `emergencyContacts` array. Each contact is returned with both `_id`
-// (Mongo) and `id` (string) for client compatibility.
-
-function _mapContact(c) {
-    return {
-        id: c._id ? c._id.toString() : "",
-        _id: c._id ? c._id.toString() : "",
-        name: c.name || "",
-        phone: c.phone || "",
-        email: c.email || "",
-        relationship: c.relationship || "",
-        app: c.app || "all",
-        priority: typeof c.priority === "number" ? c.priority : 0,
-        telegramChatId: c.telegramChatId || "",
-    };
-}
-
 // GET /api/users/emergency-contacts
 router.get("/emergency-contacts", authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("emergencyContacts");
+
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
         }
+
+        const contacts = (user.emergencyContacts || []).map(
+            buildEmergencyContactResponse
+        );
+
         return res.json({
             success: true,
-            contacts: (user.emergencyContacts || []).map(_mapContact),
+            contacts: contacts,
+            data: contacts,
         });
     } catch (error) {
-        console.error("List emergency contacts error:", error);
-        return res.status(500).json({ success: false, message: "Server error" });
+        console.error("Get emergency contacts error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while fetching emergency contacts",
+        });
     }
 });
 
 // POST /api/users/emergency-contacts
 router.post("/emergency-contacts", authMiddleware, async (req, res) => {
     try {
-        const { name, phone, email, relationship, app, priority, telegramChatId } = req.body;
-        if (!name || !phone) {
-            return res.status(400).json({ success: false, message: "name and phone are required" });
+        const { error, value } = emergencyContactSchema.validate(req.body, {
+            abortEarly: false,
+            stripUnknown: true,
+        });
+
+        if (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid emergency contact data",
+                errors: error.details.map((d) => d.message),
+            });
         }
+
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
         }
-        const contact = {
-            name,
-            phone,
-            email: email || "",
-            relationship: relationship || "",
-            app: app || "all",
-            priority: typeof priority === "number" ? priority : 0,
-            telegramChatId: telegramChatId || "",
-        };
-        user.emergencyContacts.push(contact);
+
+        user.emergencyContacts.push(value);
         await user.save();
-        const created = user.emergencyContacts[user.emergencyContacts.length - 1];
-        return res.json({ success: true, contact: _mapContact(created) });
+
+        const createdContact = user.emergencyContacts[user.emergencyContacts.length - 1];
+
+        return res.status(201).json({
+            success: true,
+            message: "Emergency contact created",
+            contact: buildEmergencyContactResponse(createdContact),
+            data: buildEmergencyContactResponse(createdContact),
+        });
     } catch (error) {
-        console.error("Add emergency contact error:", error);
-        return res.status(500).json({ success: false, message: "Server error" });
+        console.error("Create emergency contact error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while creating emergency contact",
+        });
     }
 });
 
-// PUT /api/users/emergency-contacts/:id
-router.put("/emergency-contacts/:id", authMiddleware, async (req, res) => {
+// PUT /api/users/emergency-contacts/:contactId
+router.put("/emergency-contacts/:contactId", authMiddleware, async (req, res) => {
     try {
+        const { error, value } = emergencyContactUpdateSchema.validate(req.body, {
+            abortEarly: false,
+            stripUnknown: true,
+        });
+
+        if (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid emergency contact update data",
+                errors: error.details.map((d) => d.message),
+            });
+        }
+
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
         }
-        const c = user.emergencyContacts.id(req.params.id);
-        if (!c) {
-            return res.status(404).json({ success: false, message: "Contact not found" });
+
+        const contact = user.emergencyContacts.id(req.params.contactId);
+        if (!contact) {
+            return res.status(404).json({
+                success: false,
+                message: "Emergency contact not found",
+            });
         }
-        const { name, phone, email, relationship, app, priority, telegramChatId } = req.body;
-        if (name !== undefined) c.name = name;
-        if (phone !== undefined) c.phone = phone;
-        if (email !== undefined) c.email = email;
-        if (relationship !== undefined) c.relationship = relationship;
-        if (app !== undefined) c.app = app;
-        if (priority !== undefined) c.priority = priority;
-        if (telegramChatId !== undefined) c.telegramChatId = telegramChatId;
+
+        if (value.name !== undefined) contact.name = value.name;
+        if (value.phone !== undefined) contact.phone = value.phone;
+        if (value.relationship !== undefined) {
+            contact.relationship = value.relationship;
+        }
+
         await user.save();
-        return res.json({ success: true, contact: _mapContact(c) });
+
+        return res.json({
+            success: true,
+            message: "Emergency contact updated",
+            contact: buildEmergencyContactResponse(contact),
+            data: buildEmergencyContactResponse(contact),
+        });
     } catch (error) {
         console.error("Update emergency contact error:", error);
-        return res.status(500).json({ success: false, message: "Server error" });
+        return res.status(500).json({
+            success: false,
+            message: "Server error while updating emergency contact",
+        });
     }
 });
 
-// DELETE /api/users/emergency-contacts/:id
-router.delete("/emergency-contacts/:id", authMiddleware, async (req, res) => {
+// DELETE /api/users/emergency-contacts/:contactId
+router.delete("/emergency-contacts/:contactId", authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
         }
-        const before = user.emergencyContacts.length;
-        user.emergencyContacts = user.emergencyContacts.filter(
-            (c) => c._id.toString() !== req.params.id,
-        );
-        if (user.emergencyContacts.length === before) {
-            return res.status(404).json({ success: false, message: "Contact not found" });
+
+        const contact = user.emergencyContacts.id(req.params.contactId);
+        if (!contact) {
+            return res.status(404).json({
+                success: false,
+                message: "Emergency contact not found",
+            });
         }
+
+        contact.deleteOne();
         await user.save();
-        return res.json({ success: true });
+
+        return res.json({
+            success: true,
+            message: "Emergency contact deleted",
+        });
     } catch (error) {
         console.error("Delete emergency contact error:", error);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
-});
-
-// ─── Learning progress ─────────────────────────────────────────────────────
-
-// GET /api/users/learning-progress
-router.get("/learning-progress", authMiddleware, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select("learningProgress learningActivityDates");
-        if (!user) return res.status(404).json({ success: false, message: "User not found" });
-
-        const progress = {};
-        if (user.learningProgress) {
-            for (const [k, v] of user.learningProgress.entries()) {
-                progress[k] = { watched: v.watched || false, quizPassed: v.quizPassed || false };
-            }
-        }
-
-        return res.json({
-            success: true,
-            progress,
-            activityDates: user.learningActivityDates || [],
+        return res.status(500).json({
+            success: false,
+            message: "Server error while deleting emergency contact",
         });
-    } catch (err) {
-        console.error("Get learning progress error:", err);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
-});
-
-// PUT /api/users/learning-progress
-// Body: { progress: { lessonId: { watched, quizPassed } }, activityDates: ["yyyy-MM-dd"] }
-router.put("/learning-progress", authMiddleware, async (req, res) => {
-    try {
-        const { progress, activityDates } = req.body;
-        const user = await User.findById(req.user.id);
-        if (!user) return res.status(404).json({ success: false, message: "User not found" });
-
-        if (progress && typeof progress === "object") {
-            for (const [lessonId, val] of Object.entries(progress)) {
-                const existing = user.learningProgress.get(lessonId) || {};
-                user.learningProgress.set(lessonId, {
-                    watched: val.watched ?? existing.watched ?? false,
-                    quizPassed: val.quizPassed ?? existing.quizPassed ?? false,
-                });
-            }
-        }
-
-        if (Array.isArray(activityDates)) {
-            const merged = new Set([...(user.learningActivityDates || []), ...activityDates]);
-            user.learningActivityDates = [...merged];
-        }
-
-        user.markModified("learningProgress");
-        await user.save();
-
-        const saved = {};
-        for (const [k, v] of user.learningProgress.entries()) {
-            saved[k] = { watched: v.watched || false, quizPassed: v.quizPassed || false };
-        }
-
-        return res.json({
-            success: true,
-            progress: saved,
-            activityDates: user.learningActivityDates,
-        });
-    } catch (err) {
-        console.error("Update learning progress error:", err);
-        return res.status(500).json({ success: false, message: "Server error" });
     }
 });
 
