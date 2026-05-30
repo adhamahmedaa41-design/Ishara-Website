@@ -137,10 +137,34 @@ async function localStreamFallback(text: string, onDelta: (chunk: string) => voi
 }
 
 // Streams chat — tries server first, falls back to local FAQ.
+// Streams chat — tries /api/chatbot/ask (real backend) first, falls back to local FAQ.
 export async function streamChat({ messages, lang, onDelta, signal }: StreamOptions) {
   const lastMsg = messages[messages.length - 1]?.content || '';
 
-  // Try server first
+  // Try the real backend chatbot endpoint first (/api/chatbot/ask)
+  // This route has smart rule-based answers + optional Gemini AI.
+  try {
+    const res = await fetch(`${API_BASE}/chatbot/public-ask`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages, lang }),
+      signal,
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      const reply: string = json.reply || json.message || '';
+      if (reply) {
+        // Simulate streaming by yielding words with a small delay for a natural feel
+        await localStreamFallback(reply, onDelta, signal);
+        return;
+      }
+    }
+  } catch {
+    // Backend unreachable — fall through to local FAQ
+  }
+
+  // Also try the legacy /api/chat SSE endpoint as a second fallback
   try {
     const res = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
@@ -171,13 +195,13 @@ export async function streamChat({ messages, lang, onDelta, signal }: StreamOpti
           } catch { /* ignore */ }
         }
       }
-      return; // Server stream completed
+      return;
     }
   } catch {
-    // Server unreachable — fall through to local
+    // Both server endpoints failed — use local FAQ
   }
 
-  // Local FAQ fallback
+  // Local FAQ fallback (client-side, no network required)
   const answer = localFaqMatch(lastMsg, lang);
   await localStreamFallback(answer, onDelta, signal);
 }
