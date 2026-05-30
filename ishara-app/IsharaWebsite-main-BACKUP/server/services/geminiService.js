@@ -1,4 +1,4 @@
-// services/geminiService.js
+// services/geminiService.js — v2 (updated FAQ: guide, navigate, website + 20 categories)
 // Google Gemini proxy with graceful fallback to a rule-based FAQ responder
 // when GEMINI_API_KEY is not configured. Streams tokens over SSE when possible.
 
