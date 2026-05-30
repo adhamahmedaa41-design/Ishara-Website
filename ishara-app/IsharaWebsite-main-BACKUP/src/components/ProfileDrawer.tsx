@@ -93,13 +93,21 @@ export function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
     const handleSave = async () => {
         if (!token) return;
         setIsLoading(true);
+        let uploadedProfilePic: string | undefined;
         try {
             // Upload avatar if changed
             if (avatarFile) {
                 const fd = new FormData();
                 fd.append('avatar', avatarFile);
                 const avatarRes = await userApi.updateAvatar(token, fd);
-                updateUser({ profilePic: avatarRes.avatar ?? avatarRes.profilePic });
+                // Prefer the full user object from the server, fallback to avatar field
+                if (avatarRes.user) {
+                    updateUser(avatarRes.user);
+                    uploadedProfilePic = avatarRes.user.profilePic;
+                } else {
+                    uploadedProfilePic = avatarRes.avatar ?? avatarRes.profilePic;
+                    updateUser({ profilePic: uploadedProfilePic });
+                }
             }
             // Save profile
             const profileRes = await userApi.updateProfile(token, {
@@ -107,7 +115,12 @@ export function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
                 bio: formBio || '',
                 emergencyContacts,
             });
-            updateUser(profileRes.user ?? { name: formName, bio: formBio, emergencyContacts });
+            // Merge: if we just uploaded an avatar, make sure profilePic is not overwritten by stale data
+            const updatedUser = profileRes.user ?? { name: formName, bio: formBio, emergencyContacts };
+            if (uploadedProfilePic && updatedUser.profilePic !== uploadedProfilePic) {
+                updatedUser.profilePic = uploadedProfilePic;
+            }
+            updateUser(updatedUser);
             showToast('success', 'Profile updated!');
             setIsEditing(false);
             setAvatarFile(null);

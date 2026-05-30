@@ -98,7 +98,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-    storage: isCloudinaryConfigured ? multer.memoryStorage() : localDiskStorage,
+    storage: (isCloudinaryConfigured || process.env.VERCEL) ? multer.memoryStorage() : localDiskStorage,
     limits: { fileSize: 2 * 1024 * 1024 },
     fileFilter: fileFilter,
 });
@@ -138,13 +138,21 @@ router.put(
                     fs.unlink(req.file.path, () => {});
                 }
             } else {
-                if (process.env.VERCEL) {
-                    return res.status(503).json({
+                // Fallback: store as Base64 data URI directly in MongoDB.
+                // Works on Vercel without any external storage service.
+                let fileBuffer = req.file.buffer;
+                if (!fileBuffer && req.file.path) {
+                    fileBuffer = fs.readFileSync(req.file.path);
+                    fs.unlink(req.file.path, () => {});
+                }
+                if (!fileBuffer) {
+                    return res.status(400).json({
                         success: false,
-                        message: "Avatar upload requires Cloudinary in Vercel deployment",
+                        message: "Could not read uploaded file",
                     });
                 }
-                avatarPath = resolvePublicUrl(req, `/uploads/${req.file.filename}`);
+                const mimeType = req.file.mimetype || "image/jpeg";
+                avatarPath = `data:${mimeType};base64,${fileBuffer.toString("base64")}`;
             }
 
             user.profilePic = avatarPath;
@@ -166,7 +174,7 @@ router.put(
                 });
             }
 
-            if (error.message.includes("Only image files")) {
+            if (error.message && error.message.includes("Only image files")) {
                 return res.status(400).json({
                     success: false,
                     message: "Only image files (jpeg, jpg, png, gif) are allowed",
