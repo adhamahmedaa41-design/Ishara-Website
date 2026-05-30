@@ -1,0 +1,204 @@
+/* Mobile App Styles - 8px Grid System & Safe Areas */
+.mobile-app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--mobile-bg);
+  transition: background 0.4s ease;
+  /* Safe area for notched devices */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.main-app-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  /* Safe area margins */
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* Theme Variables - 8px Grid System */
+:root {
+  /* Colors */
+  --mobile-bg: #FFFFFF;
+  --mobile-card-bg: #FFFFFF;
+  --mobile-text: #1F3A63;
+  --mobile-text-secondary: #64748B;
+  --mobile-border: #E2E8F0;
+  --mobile-shadow: rgba(0, 0, 0, 0.1);
+  --mobile-primary: #14B8A6;
+  --mobile-secondary: #F97316;
+  --mobile-danger: #EF4444;
+  --mobile-success: #10B981;
+  
+  /* Spacing - 8px Grid */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Touch Targets */
+  --touch-min: 44px;
+  --touch-large: 56px;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Safe Areas */
+  --safe-top: 44px;
+  --safe-bottom: 34px;
+  --safe-margin: 16px;
+}
+
+[data-theme="dark"] {
+  --mobile-bg: #0F172A;
+  --mobile-card-bg: #1E293B;
+  --mobile-text: #F1F5F9;
+  --mobile-text-secondary: #94A3B8;
+  --mobile-border: #334155;
+  --mobile-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar Styling */
+.tab-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+  background: var(--mobile-border);
+  border-radius: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (min-width: 768px) {
+  .mobile-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  }
+
+  .mobile-app > div {
+    max-width: 428px;
+    height: 926px;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 8px solid #1E293B;
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="rtl"] .tab-content {
+  text-align: right;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Touch Feedback */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.touch-feedback:active::after {
+  width: 300px;
+  height: 300px;
+}

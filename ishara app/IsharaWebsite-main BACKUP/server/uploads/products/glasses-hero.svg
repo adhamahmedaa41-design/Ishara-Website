@@ -1,0 +1,26 @@
+<!-- TODO: Replace with professional product render of the Smart Assistive Glasses. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Ishara Smart Assistive Glasses placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <radialGradient id="lens" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#e0f2fe" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#0ea5e9" stop-opacity=".4"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <g transform="translate(150,260)">
+    <rect x="0" y="60" width="360" height="220" rx="36" fill="url(#lens)" stroke="url(#frame)" stroke-width="14"/>
+    <rect x="540" y="60" width="360" height="220" rx="36" fill="url(#lens)" stroke="url(#frame)" stroke-width="14"/>
+    <rect x="360" y="150" width="180" height="20" rx="10" fill="url(#frame)"/>
+    <circle cx="180" cy="170" r="14" fill="#0f172a" opacity=".6"/>
+    <circle cx="720" cy="170" r="14" fill="#0f172a" opacity=".6"/>
+  </g>
+  <text x="600" y="720" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#e2e8f0" opacity=".9">ISHARA — Smart Assistive Glasses (placeholder render)</text>
+</svg>

@@ -1,0 +1,14 @@
+<!-- TODO: Replace with professional product render of the Smart Bracelet. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Ishara Smart Bracelet placeholder">
+  <defs>
+    <linearGradient id="bg2" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#1e293b"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg2)"/>
+  <ellipse cx="600" cy="400" rx="260" ry="120" fill="none" stroke="#0f172a" stroke-width="40"/>
+  <rect x="540" y="340" width="120" height="80" rx="18" fill="#14B8A6"/>
+  <circle cx="600" cy="380" r="18" fill="#F97316"/>
+  <text x="600" y="720" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#e2e8f0" opacity=".9">ISHARA — Smart Bracelet (placeholder render)</text>
+</svg>

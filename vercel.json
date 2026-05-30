@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd \"ishara app/IsharaWebsite-main BACKUP\" && npm install",
+  "buildCommand": "cd \"ishara app/IsharaWebsite-main BACKUP\" && npm run build",
+  "outputDirectory": "ishara app/IsharaWebsite-main BACKUP/build",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

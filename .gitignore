@@ -1,0 +1,19 @@
+# Keep repository focused on app source
+*.lnk
+*.url
+*.pdf
+
+# Desktop/OS metadata
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Heavy/generated assets
+ishara app/3D model/
+ishara app/Ishara-main/build/
+ishara app/Ishara-main/data/
+ishara app/Ishara-main/assets/
+ishara app/Ishara-main/models/
+ishara app/Ishara-main/runs/
+ishara app/Ishara-main/yolov8n_saved_model/
+ishara app/Ishara-main/yolov8n-oiv7_saved_model/

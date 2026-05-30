@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build output
+build/
+dist/
+server/public/
+
+# Env files (contain secrets — DO NOT COMMIT)
+.env
+.env.local
+.env.*.local
+server/.env
+server/.env.local
+server/.env.*.local
+
+# Uploads (user-generated / large binaries)
+server/uploads/profile-*
+server/uploads/avatars/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc
+*.rar
+*.zip
+
+# Prevent accidental nested app commit
+Ishara-main/

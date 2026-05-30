@@ -1,0 +1,8 @@
+<!-- TODO: Replace with concept illustration of the Smart Cane. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Smart cane concept placeholder">
+  <defs><linearGradient id="g4" x1="0" x2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#14B8A6"/></linearGradient></defs>
+  <rect width="1200" height="800" fill="url(#g4)"/>
+  <rect x="585" y="140" width="30" height="520" rx="14" fill="#F97316"/>
+  <circle cx="600" cy="700" r="28" fill="#e2e8f0"/>
+  <text x="600" y="760" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" fill="#e2e8f0" opacity=".9">Concept — Smart Cane</text>
+</svg>
