@@ -84,9 +84,69 @@ const FAQ = [
         ar: "الشحن ٥٠ جنيهًا داخل مصر. عادةً يصل خلال ٢–٤ أيام عمل.",
     },
     {
-        keys: ["warranty", "ضمان"],
-        en: "Every hardware product ships with a 2-year limited warranty.",
-        ar: "كل منتج يأتي بضمان محدود لمدة سنتين.",
+        keys: ["warranty", "return", "refund", "repair", "ضمان", "إرجاع", "استرداد"],
+        en: "Every hardware product ships with a 2-year limited warranty and a 14-day return policy (unused, original packaging). For repairs: support@ishara.app.",
+        ar: "كل منتج يأتي بضمان محدود لسنتين وسياسة إرجاع خلال ١٤ يومًا (غير مستخدم بعبوته الأصلية). للإصلاح: support@ishara.app.",
+    },
+    {
+        keys: ["guide", "navigate", "how to use", "tour", "overview", "walk me", "show me", "sections", "website", "explore", "start"],
+        en: "Here's a tour of the Ishara website:\n\n1. Hero — Welcome intro & mission overview\n2. About — Ishara's story and values\n3. Hardware — Smart Glasses & Bracelet specs\n4. Technology — How our AI & sensors work\n5. Safety — Interactive SOS emergency demo\n6. Learning — Sign language lessons & quizzes\n7. Shop — Buy glasses or bracelet\n8. Contact — Reach our team\n\nScroll down or click any section in the top navigation bar to jump there instantly!",
+        ar: "إليك جولة في موقع إشارة:\n\n١. الرئيسية — مقدمة ورسالة إشارة\n٢. من نحن — قصة وقيم إشارة\n٣. الأجهزة — مواصفات النظارات والسوار\n٤. التقنية — كيف تعمل الذكاء الاصطناعي والمستشعرات\n٥. الأمان — محاكاة تفاعلية لنظام الاستغاثة\n٦. التعلم — دروس لغة الإشارة والاختبارات\n٧. المتجر — شراء النظارات أو السوار\n٨. اتصل بنا — تواصل مع الفريق\n\nمرر للأسفل أو انقر على أي قسم في شريط التنقل العلوي!",
+    },
+    {
+        keys: ["glasses", "smart glasses", "specs", "specifications", "processor", "camera", "لغة الإشارة", "نظارات", "نظارة", "كاميرا", "مواصفات"],
+        en: "Smart Glasses specs:\n• 12 MP camera\n• Qualcomm AR2 processor\n• 8-hour battery (USB-C)\n• Sign language recognition\n• Obstacle detection (up to 2m)\n• Currency & object ID\n• Voice guidance\n• Bluetooth & Wi-Fi\n• Price: 12,999 EGP",
+        ar: "مواصفات النظارات الذكية:\n• كاميرا ١٢ ميجابكسل\n• معالج Qualcomm AR2\n• بطارية ٨ ساعات (USB-C)\n• تعرف لغة الإشارة\n• اكتشاف عوائق (حتى مترين)\n• تمييز عملات وأشياء\n• توجيه صوتي\n• بلوتوث وواي فاي\n• السعر: ١٢٬٩٩٩ جنيه",
+    },
+    {
+        keys: ["bracelet", "wrist", "band", "سوار", "معصم"],
+        en: "Smart Bracelet features:\n• SOS button with 5-second countdown\n• Haptic vibration alerts for deaf users\n• Live GPS location sharing\n• Water-resistant IP67\n• Up to 5 days battery\n• Price: 2,499 EGP",
+        ar: "ميزات السوار الذكي:\n• زر استغاثة مع عداد ٥ ثوانٍ\n• تنبيهات اهتزازية للصُّم\n• مشاركة GPS المباشر\n• مقاوم للماء IP67\n• بطارية تدوم حتى ٥ أيام\n• السعر: ٢٬٤٩٩ جنيه",
+    },
+    {
+        keys: ["app", "mobile", "download", "android", "iphone", "ios", "تطبيق", "تحميل", "هاتف"],
+        en: "The Ishara app is FREE on iOS and Android. Features include sign-to-speech, speech-to-sign, vision assistance, SOS safety, a learning hub, and accessibility settings. Search 'Ishara' on the App Store or Google Play.",
+        ar: "تطبيق إشارة مجاني على iOS وAndroid. يشمل: إشارة إلى كلام، كلام إلى إشارة، مساعدة بصرية، استغاثة، مركز تعلم، إعدادات وصولية. ابحث عن «إشارة» في App Store أو Google Play.",
+    },
+    {
+        keys: ["learn", "lesson", "quiz", "course", "study", "dictionary", "تعلم", "درس", "اختبار", "قاموس"],
+        en: "Learning Hub features:\n• Arabic Sign Language (ArSL) lessons with video\n• Duolingo-style quizzes with XP rewards\n• Complete sign language dictionary\n• Progress tracking & daily streaks\n\nScroll to the Learning section on the website to get started!",
+        ar: "مركز التعلم:\n• دروس لغة الإشارة العربية مع فيديو\n• اختبارات بأسلوب Duolingo مع مكافآت XP\n• قاموس إشارات كامل\n• تتبع التقدم وسلاسل يومية\n\nمرر إلى قسم التعلم في الموقع للبدء!",
+    },
+    {
+        keys: ["shop", "store", "buy now", "order", "add to cart", "متجر", "شراء", "اطلب"],
+        en: "Visit the Shop section to order:\n• Smart Assistive Glasses — 12,999 EGP\n• Smart Safety Bracelet — 2,499 EGP\nShipping: 50 EGP flat, 2-4 business days anywhere in Egypt.",
+        ar: "زر قسم المتجر للطلب:\n• النظارات الذكية — ١٢٬٩٩٩ جنيه\n• السوار الذكي — ٢٬٤٩٩ جنيه\nالشحن: ٥٠ جنيهًا ثابتًا، ٢-٤ أيام عمل في مصر.",
+    },
+    {
+        keys: ["contact", "support", "team", "reach", "email", "اتصل", "تواصل", "دعم", "فريق", "بريد"],
+        en: "Contact the Ishara team:\n• Email: support@ishara.app\n• Use the Contact form at the bottom of the website\n• Response time: within 24 hours",
+        ar: "تواصل مع فريق إشارة:\n• البريد الإلكتروني: support@ishara.app\n• استخدم نموذج التواصل في أسفل الموقع\n• وقت الرد: خلال ٢٤ ساعة",
+    },
+    {
+        keys: ["hello", "hi", "hey", "howdy", "good morning", "good evening", "مرحب", "أهلا", "السلام", "صباح", "مساء", "هلا"],
+        en: "Hello! I'm the Ishara assistant. I can help you with:\n• Product info & pricing\n• How to navigate the website\n• Sign language & technology features\n• SOS & safety features\n• Ordering & support\n\nWhat would you like to know?",
+        ar: "أهلًا! أنا مساعد إشارة. يمكنني مساعدتك في:\n• معلومات المنتجات والأسعار\n• كيفية تصفح الموقع\n• ميزات لغة الإشارة والتقنية\n• ميزات الأمان والاستغاثة\n• الطلب والدعم\n\nبماذا يمكنني مساعدتك؟",
+    },
+    {
+        keys: ["about", "who", "mission", "story", "company", "من نحن", "عن إشارة", "رسالة"],
+        en: "Ishara is an Egyptian assistive-technology ecosystem for deaf, blind, and non-verbal users. Our name means 'sign' or 'gesture' in Arabic. We build smart hardware and software to empower independence and social inclusion.",
+        ar: "إشارة منظومة تقنيات مساعدة مصرية لضعاف السمع والمكفوفين وذوي النطق المحدود. اسمنا يعني الإشارة أو الإيماء. نبني أجهزة وبرامج ذكية لتمكين الاستقلالية والاندماج الاجتماعي.",
+    },
+    {
+        keys: ["technology", "how it works", "ai", "sensor", "ultrasonic", "tech", "تقنية", "كيف تعمل", "ذكاء"],
+        en: "Ishara technology:\n• Ultrasonic sensors detect obstacles up to 2 meters\n• On-device AI — works without internet\n• 12MP camera for real-time sign recognition\n• Dual haptic + audio feedback\n• All data processed locally for privacy",
+        ar: "تقنية إشارة:\n• مستشعرات فوق صوتية تكتشف العوائق حتى مترين\n• ذكاء اصطناعي محلي — يعمل بدون إنترنت\n• كاميرا ١٢ ميجابكسل للتعرف الفوري على الإشارة\n• تغذية راجعة مزدوجة: اهتزاز وصوت\n• جميع البيانات تُعالج محليًا للخصوصية",
+    },
+    {
+        keys: ["accessibility", "tts", "contrast", "dyslexia", "large text", "color blind", "إمكانية وصول", "تحدث", "تباين", "عسر"],
+        en: "Accessibility Settings in the app:\n• Text-to-speech (TTS) narration\n• High contrast mode\n• Dyslexia-friendly font\n• Large text mode\n• Color-blind palettes\n• Motor accessibility support",
+        ar: "إعدادات إمكانية الوصول في التطبيق:\n• التحدث التلقائي (TTS)\n• وضع التباين العالي\n• خط صديق لعسر القراءة\n• وضع تكبير النص\n• ألوان مناسبة لعمى الألوان\n• دعم إمكانية الحركة",
+    },
+    {
+        keys: ["thank", "thanks", "great", "awesome", "perfect", "helpful", "شكرا", "ممتاز", "رائع", "مشكور"],
+        en: "You're welcome! Is there anything else I can help you with?",
+        ar: "على الرحب والسعة! هل هناك شيء آخر يمكنني مساعدتك فيه؟",
     },
 ];
 
