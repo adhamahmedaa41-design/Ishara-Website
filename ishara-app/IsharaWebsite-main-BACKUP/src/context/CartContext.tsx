@@ -148,9 +148,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (wasAuthenticatedRef.current) {
         setLines([]); // Clear cart items on logout
         wasAuthenticatedRef.current = false;
+        hadTokenOnMountRef.current = false; // Only reset to false on explicit logout
       }
       mergedOnceRef.current = false;
-      hadTokenOnMountRef.current = false;
     }
   }, [isAuthenticated, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
