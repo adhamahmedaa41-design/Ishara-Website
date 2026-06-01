@@ -17,3 +17,7 @@ ishara app/Ishara-main/models/
 ishara app/Ishara-main/runs/
 ishara app/Ishara-main/yolov8n_saved_model/
 ishara app/Ishara-main/yolov8n-oiv7_saved_model/
+
+# Personal folders to ignore
+Final/
+orbit/
