@@ -76,6 +76,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>(() => loadLocal());
   const [isSyncing, setIsSyncing] = useState(false);
   const mergedOnceRef = useRef(false);
+  const hadTokenOnMountRef = useRef(!!localStorage.getItem('token'));
 
   // Persist locally every change.
   useEffect(() => {
@@ -91,18 +92,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       try {
         const server = await getServerCart();
 
-        // Combine: sum qty where both exist; clamp to 99.
-        const combined = new Map<string, number>();
-        server.items.forEach((i) => combined.set(i.product, i.qty));
-        lines.forEach((l) =>
-          combined.set(l.product, Math.min((combined.get(l.product) || 0) + l.qty, 99))
-        );
+        let updatedLines: CartLine[];
 
-        const merged = [...combined.entries()].map(([product, qty]) => ({ product, qty }));
-        const updated = merged.length ? await replaceServerCart(merged) : server;
-
-        setLines(
-          updated.items.map((i) => ({
+        if (hadTokenOnMountRef.current) {
+          // User was already logged in (e.g. refreshed the page).
+          // Trust the server cart as the absolute source of truth.
+          updatedLines = server.items.map((i) => ({
             product: i.product,
             slug: i.slug,
             titleEn: i.title.en,
@@ -111,8 +106,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
             priceEGP: i.priceEGP,
             stock: i.stock,
             qty: i.qty,
-          }))
-        );
+          }));
+        } else {
+          // User just logged in (guest -> logged-in transition).
+          // Combine guest local cart with server cart.
+          const combined = new Map<string, number>();
+          server.items.forEach((i) => combined.set(i.product, i.qty));
+          lines.forEach((l) =>
+            combined.set(l.product, Math.min((combined.get(l.product) || 0) + l.qty, 99))
+          );
+
+          const merged = [...combined.entries()].map(([product, qty]) => ({ product, qty }));
+          const updated = merged.length ? await replaceServerCart(merged) : server;
+
+          updatedLines = updated.items.map((i) => ({
+            product: i.product,
+            slug: i.slug,
+            titleEn: i.title.en,
+            titleAr: i.title.ar,
+            image: resolveImageUrl(i.image) || '',
+            priceEGP: i.priceEGP,
+            stock: i.stock,
+            qty: i.qty,
+          }));
+        }
+
+        setLines(updatedLines);
+        hadTokenOnMountRef.current = true;
       } catch {
         // Keep local lines if server unreachable.
       } finally {
@@ -120,7 +140,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
     }
     merge();
-    if (!isAuthenticated) mergedOnceRef.current = false;
+    if (!isAuthenticated) {
+      mergedOnceRef.current = false;
+      hadTokenOnMountRef.current = false;
+    }
   }, [isAuthenticated, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Push the authoritative items to the server (debounced).
