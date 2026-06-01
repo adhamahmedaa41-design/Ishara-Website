@@ -77,6 +77,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isSyncing, setIsSyncing] = useState(false);
   const mergedOnceRef = useRef(false);
   const hadTokenOnMountRef = useRef(!!localStorage.getItem('token'));
+  const wasAuthenticatedRef = useRef(false);
 
   // Persist locally every change.
   useEffect(() => {
@@ -109,11 +110,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }));
         } else {
           // User just logged in (guest -> logged-in transition).
-          // Combine guest local cart with server cart.
+          // Combine guest local cart with server cart using Math.max to prevent doubling.
           const combined = new Map<string, number>();
           server.items.forEach((i) => combined.set(i.product, i.qty));
           lines.forEach((l) =>
-            combined.set(l.product, Math.min((combined.get(l.product) || 0) + l.qty, 99))
+            combined.set(l.product, Math.max(combined.get(l.product) || 0, l.qty))
           );
 
           const merged = [...combined.entries()].map(([product, qty]) => ({ product, qty }));
@@ -139,8 +140,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setIsSyncing(false);
       }
     }
-    merge();
-    if (!isAuthenticated) {
+
+    if (isAuthenticated) {
+      wasAuthenticatedRef.current = true;
+      merge();
+    } else {
+      if (wasAuthenticatedRef.current) {
+        setLines([]); // Clear cart items on logout
+        wasAuthenticatedRef.current = false;
+      }
       mergedOnceRef.current = false;
       hadTokenOnMountRef.current = false;
     }
