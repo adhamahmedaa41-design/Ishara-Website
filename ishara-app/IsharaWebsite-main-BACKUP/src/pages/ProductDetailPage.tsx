@@ -41,7 +41,7 @@ const FALLBACK_CATALOG: Record<string, Product> = {
       { src: '/products/glasses-5.jpg', alt: { en: 'Smart Glasses camera macro', ar: 'النظارات — لقطة مقربة' } },
       { src: '/products/glasses-6.jpg', alt: { en: 'Smart Glasses lifestyle', ar: 'النظارات — استخدام يومي' } },
     ],
-    priceEGP: 12999, compareAtEGP: 15999, stock: 25, ratingAvg: 4.8, ratingCount: 42,
+    priceEGP: 1500, compareAtEGP: 2000, stock: 25, ratingAvg: 4.8, ratingCount: 42,
   },
   'smart-bracelet': {
     _id: 'fb-bracelet', slug: 'smart-bracelet', category: 'hardware', isFeatured: false, isConcept: false,
@@ -72,7 +72,7 @@ const FALLBACK_CATALOG: Record<string, Product> = {
       { src: '/products/bracelet-5.jpg', alt: { en: 'SOS button macro', ar: 'لقطة مقربة لزر الاستغاثة' } },
       { src: '/products/bracelet-6.jpg', alt: { en: 'Smart Bracelet on wrist', ar: 'السوار على المعصم' } },
     ],
-    priceEGP: 2499, stock: 60, ratingAvg: 4.6, ratingCount: 28,
+    priceEGP: 800, stock: 60, ratingAvg: 4.6, ratingCount: 28,
   },
   'ishara-mobile-app': {
     _id: 'fb-app', slug: 'ishara-mobile-app', category: 'digital', isFeatured: false, isConcept: false,

@@ -80,8 +80,8 @@ const PRODUCTS = [
             { src: "/uploads/products/glasses-5.jpg", alt: { en: "Smart Assistive Glasses — camera macro close-up", ar: "النظارات الذكية المساعدة — لقطة مقربة للكاميرا" } },
             { src: "/uploads/products/glasses-6.jpg", alt: { en: "Smart Assistive Glasses — lifestyle, worn in a cafe", ar: "النظارات الذكية المساعدة — استخدام يومي في مقهى" } },
         ],
-        priceEGP: 12999,
-        compareAtEGP: 15999,
+        priceEGP: 1500,
+        compareAtEGP: 2000,
         stock: 25,
     },
     {
@@ -134,7 +134,7 @@ const PRODUCTS = [
             { src: "/uploads/products/bracelet-5.jpg", alt: { en: "Smart Bracelet — macro of the SOS button", ar: "السوار الذكي — لقطة مقربة لزر الاستغاثة" } },
             { src: "/uploads/products/bracelet-6.jpg", alt: { en: "Smart Bracelet — lifestyle, worn on a wrist", ar: "السوار الذكي — على المعصم" } },
         ],
-        priceEGP: 2499,
+        priceEGP: 800,
         stock: 60,
     },
     {

@@ -31,7 +31,7 @@ Rules:
 1. Use simple sentences. Avoid jargon. Default to under 80 words unless asked for detail.
 2. If the user writes in Arabic, answer in Modern Standard Arabic.
 3. Be empathetic toward disability. Never use pitying language.
-4. If asked about prices: Glasses 12,999 EGP, Bracelet 2,499 EGP, App Free. Shipping inside Egypt 50 EGP.
+4. If asked about prices: Glasses 1,500 EGP, Bracelet 800 EGP, App Free. Shipping inside Egypt 50 EGP.
 5. If asked something you don't know, say so clearly and suggest contacting the team via the Contact section.
 6. Never invent medical, legal, or safety claims. If emergency: advise the SOS button or calling 122 (Egypt police) / 123 (ambulance).`;
 
@@ -46,7 +46,7 @@ const SYSTEM_PROMPT_AR = `أنت مساعد إشارة — مساعد ودود �
 ١. استخدم جملًا بسيطة وتجنب المصطلحات. اختصر الرد تحت ٨٠ كلمة ما لم يُطلب غير ذلك.
 ٢. إذا كتب المستخدم بالإنجليزية فأجب بالإنجليزية.
 ٣. كن متعاطفًا دون لغة شفقة.
-٤. الأسعار: النظارات ١٢٬٩٩٩ ج.م، السوار ٢٬٤٩٩ ج.م، التطبيق مجاني. الشحن داخل مصر ٥٠ ج.م.
+٤. الأسعار: النظارات ١٬٥٠٠ ج.م، السوار ٨٠٠ ج.م، التطبيق مجاني. الشحن داخل مصر ٥٠ ج.م.
 ٥. إن لم تعرف، فقل ذلك وانصح بالتواصل عبر قسم "اتصل بنا".
 ٦. لا تختلق ادعاءات طبية أو قانونية. في حالة الطوارئ انصح باستخدام زر الاستغاثة أو الاتصال بـ ١٢٢ (الشرطة) / ١٢٣ (الإسعاف).`;
 
@@ -55,8 +55,8 @@ const SYSTEM_PROMPT_AR = `أنت مساعد إشارة — مساعد ودود �
 const FAQ = [
     {
         keys: ["price", "cost", "kam", "kam sa3r", "سعر", "تكلفة", "بكم"],
-        en: "Smart Assistive Glasses: 12,999 EGP. Smart Bracelet: 2,499 EGP. Ishara mobile app: Free. Shipping in Egypt: 50 EGP.",
-        ar: "النظارات الذكية: ١٢٬٩٩٩ جنيه. السوار الذكي: ٢٬٤٩٩ جنيه. تطبيق إشارة: مجاني. الشحن داخل مصر: ٥٠ جنيهًا.",
+        en: "Smart Assistive Glasses: 1,500 EGP. Smart Bracelet: 800 EGP. Ishara mobile app: Free. Shipping in Egypt: 50 EGP.",
+        ar: "النظارات الذكية: ١٬٥٠٠ جنيه. السوار الذكي: ٨٠٠ جنيه. تطبيق إشارة: مجاني. الشحن داخل مصر: ٥٠ جنيهًا.",
     },
     {
         keys: ["blind", "vision", "see", "مكفوف", "كفيف", "بصر"],
@@ -95,13 +95,13 @@ const FAQ = [
     },
     {
         keys: ["glasses", "smart glasses", "specs", "specifications", "processor", "camera", "لغة الإشارة", "نظارات", "نظارة", "كاميرا", "مواصفات"],
-        en: "Smart Glasses specs:\n• 12 MP camera\n• Qualcomm AR2 processor\n• 8-hour battery (USB-C)\n• Sign language recognition\n• Obstacle detection (up to 2m)\n• Currency & object ID\n• Voice guidance\n• Bluetooth & Wi-Fi\n• Price: 12,999 EGP",
-        ar: "مواصفات النظارات الذكية:\n• كاميرا ١٢ ميجابكسل\n• معالج Qualcomm AR2\n• بطارية ٨ ساعات (USB-C)\n• تعرف لغة الإشارة\n• اكتشاف عوائق (حتى مترين)\n• تمييز عملات وأشياء\n• توجيه صوتي\n• بلوتوث وواي فاي\n• السعر: ١٢٬٩٩٩ جنيه",
+        en: "Smart Glasses specs:\n• 12 MP camera\n• Qualcomm AR2 processor\n• 8-hour battery (USB-C)\n• Sign language recognition\n• Obstacle detection (up to 2m)\n• Currency & object ID\n• Voice guidance\n• Bluetooth & Wi-Fi\n• Price: 1,500 EGP",
+        ar: "مواصفات النظارات الذكية:\n• كاميرا ١٢ ميجابكسل\n• معالج Qualcomm AR2\n• بطارية ٨ ساعات (USB-C)\n• تعرف لغة الإشارة\n• اكتشاف عوائق (حتى مترين)\n• تمييز عملات وأشياء\n• توجيه صوتي\n• بلوتوث وواي فاي\n• السعر: ١٬٥٠٠ جنيه",
     },
     {
         keys: ["bracelet", "wrist", "band", "سوار", "معصم"],
-        en: "Smart Bracelet features:\n• SOS button with 5-second countdown\n• Haptic vibration alerts for deaf users\n• Live GPS location sharing\n• Water-resistant IP67\n• Up to 5 days battery\n• Price: 2,499 EGP",
-        ar: "ميزات السوار الذكي:\n• زر استغاثة مع عداد ٥ ثوانٍ\n• تنبيهات اهتزازية للصُّم\n• مشاركة GPS المباشر\n• مقاوم للماء IP67\n• بطارية تدوم حتى ٥ أيام\n• السعر: ٢٬٤٩٩ جنيه",
+        en: "Smart Bracelet features:\n• SOS button with 5-second countdown\n• Haptic vibration alerts for deaf users\n• Live GPS location sharing\n• Water-resistant IP67\n• Up to 5 days battery\n• Price: 800 EGP",
+        ar: "ميزات السوار الذكي:\n• زر استغاثة مع عداد ٥ ثوانٍ\n• تنبيهات اهتزازية للصُّم\n• مشاركة GPS المباشر\n• مقاوم للماء IP67\n• بطارية تدوم حتى ٥ أيام\n• السعر: ٨٠٠ جنيه",
     },
     {
         keys: ["app", "mobile", "download", "android", "iphone", "ios", "تطبيق", "تحميل", "هاتف"],
@@ -115,8 +115,8 @@ const FAQ = [
     },
     {
         keys: ["shop", "store", "buy now", "order", "add to cart", "متجر", "شراء", "اطلب"],
-        en: "Visit the Shop section to order:\n• Smart Assistive Glasses — 12,999 EGP\n• Smart Safety Bracelet — 2,499 EGP\nShipping: 50 EGP flat, 2-4 business days anywhere in Egypt.",
-        ar: "زر قسم المتجر للطلب:\n• النظارات الذكية — ١٢٬٩٩٩ جنيه\n• السوار الذكي — ٢٬٤٩٩ جنيه\nالشحن: ٥٠ جنيهًا ثابتًا، ٢-٤ أيام عمل في مصر.",
+        en: "Visit the Shop section to order:\n• Smart Assistive Glasses — 1,500 EGP\n• Smart Safety Bracelet — 800 EGP\nShipping: 50 EGP flat, 2-4 business days anywhere in Egypt.",
+        ar: "زر قسم المتجر للطلب:\n• النظارات الذكية — ١٬٥٠٠ جنيه\n• السوار الذكي — ٨٠٠ جنيه\nالشحن: ٥٠ جنيهًا ثابتًا، ٢-٤ أيام عمل في مصر.",
     },
     {
         keys: ["contact", "support", "team", "reach", "email", "اتصل", "تواصل", "دعم", "فريق", "بريد"],

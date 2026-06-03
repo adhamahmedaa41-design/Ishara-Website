@@ -19,7 +19,7 @@ const FALLBACK_PRODUCTS: Product[] = [
     description: { en: 'Flagship smart glasses with sign language recognition, obstacle detection and voice guidance.', ar: 'نظارات ذكية رائدة.' },
     features: [], specs: [],
     images: [{ src: '/products/glasses-1.jpg', alt: { en: 'Smart Glasses', ar: 'النظارات الذكية' } }],
-    priceEGP: 12999, compareAtEGP: 15999, stock: 25, ratingAvg: 4.8, ratingCount: 42,
+    priceEGP: 1500, compareAtEGP: 2000, stock: 25, ratingAvg: 4.8, ratingCount: 42,
   },
   {
     _id: 'fb-bracelet', slug: 'smart-bracelet', category: 'hardware', isFeatured: false, isConcept: false,
@@ -28,7 +28,7 @@ const FALLBACK_PRODUCTS: Product[] = [
     description: { en: 'SOS emergency button, vibration alerts, live location sharing.', ar: 'زر استغاثة وتنبيهات.' },
     features: [], specs: [],
     images: [{ src: '/products/bracelet-1.jpg', alt: { en: 'Smart Bracelet', ar: 'السوار الذكي' } }],
-    priceEGP: 2499, stock: 60, ratingAvg: 4.6, ratingCount: 28,
+    priceEGP: 800, stock: 60, ratingAvg: 4.6, ratingCount: 28,
   },
   {
     _id: 'fb-app', slug: 'ishara-mobile-app', category: 'digital', isFeatured: false, isConcept: false,
