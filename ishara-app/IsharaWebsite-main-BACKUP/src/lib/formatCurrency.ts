@@ -1,6 +1,6 @@
 // EGP currency formatter with locale-aware output.
-//   en -> "EGP 12,999"
-//   ar -> "١٢٬٩٩٩ ج.م"
+//   en -> "EGP 1,500"
+//   ar -> "١٬٥٠٠ ج.م"
 // Falls back to plain number + "EGP" if Intl is unavailable.
 export function formatEGP(amount: number, lang: 'en' | 'ar' = 'en'): string {
   const safe = Number.isFinite(amount) ? amount : 0;

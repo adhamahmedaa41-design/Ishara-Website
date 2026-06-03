@@ -9,7 +9,7 @@ Ishara helps deaf, blind, and non-verbal users in Egypt with:
 - Multi-contact emergency SOS with silent SMS + WhatsApp + Telegram and live location
 - Learning Hub with Arabic Sign Language clips and a Duolingo-style quiz
 - Hardware glasses pairing for obstacle detection and SOS button
-- Shop for accessibility products (Smart Glasses: 12,999 EGP, Smart Bracelet: 2,499 EGP, App: Free)
+- Shop for accessibility products (Smart Glasses: 1,500 EGP, Smart Bracelet: 800 EGP, App: Free)
 - Accessibility settings: auto-TTS, high contrast, color-blind palettes, dyslexia font, large text, motor mode
 - Warranty: 2-year limited; Returns: 14-day policy; Shipping: 50 EGP within Egypt
 You answer in the user's language (Arabic or English). Be warm, informative, and thorough.
@@ -106,8 +106,8 @@ function ruleBased(q) {
     // Identity / About
     if (/who are you|what are you|what is ishara|about ishara|introduce|your name|من أنت|ما هي إشارة|عن إشارة/.test(q)) {
         return ar
-            ? "أنا مساعد إشارة الذكي. 🤖\n\nإشارة منظومة تقنيات مساعدة مصرية مصمَّمة لـ:\n• الصُّم وضعاف السمع — ترجمة الإشارة ↔ الكلام\n• المكفوفين وضعاف البصر — اكتشاف العوائق وتمييز الأشياء وقراءة العملات\n• غير الناطقين — تحويل النص إلى كلام\n\nالمنتجات: النظارات الذكية (١٢٬٩٩٩ جنيه) + تطبيق مجاني."
-            : "I'm the Ishara AI assistant. 🤖\n\nIshara is an Egyptian assistive-technology ecosystem for:\n• Deaf/hard-of-hearing — sign ↔ speech translation\n• Blind/low-vision — obstacle detection, object ID, currency reading\n• Non-verbal — text-to-speech & communication tools\n\nProducts: Smart Glasses (12,999 EGP) + free mobile app.";
+            ? "أنا مساعد إشارة الذكي. 🤖\n\nإشارة منظومة تقنيات مساعدة مصرية مصمَّمة لـ:\n• الصُّم وضعاف السمع — ترجمة الإشارة ↔ الكلام\n• المكفوفين وضعاف البصر — اكتشاف العوائق وتمييز الأشياء وقراءة العملات\n• غير الناطقين — تحويل النص إلى كلام\n\nالمنتجات: النظارات الذكية (١٬٥٠٠ جنيه) + تطبيق مجاني."
+            : "I'm the Ishara AI assistant. 🤖\n\nIshara is an Egyptian assistive-technology ecosystem for:\n• Deaf/hard-of-hearing — sign ↔ speech translation\n• Blind/low-vision — obstacle detection, object ID, currency reading\n• Non-verbal — text-to-speech & communication tools\n\nProducts: Smart Glasses (1,500 EGP) + free mobile app.";
     }
 
     // Navigation / Guide
@@ -120,8 +120,8 @@ function ruleBased(q) {
     // Pricing
     if (/price|cost|how much|pricing|buy|purchase|order|pay|سعر|تكلفة|بكم|كام|اشتري|طلب/.test(q)) {
         return ar
-            ? "💰 أسعار إشارة:\n\n• النظارات الذكية: **١٢٬٩٩٩ جنيه**\n• السوار الذكي: **٢٬٤٩٩ جنيه**\n• التطبيق: **مجاني** (iOS وAndroid)\n• الشحن داخل مصر: **٥٠ جنيهًا**\n\nافتح المتجر للطلب. [open:shop]"
-            : "💰 Ishara Pricing:\n\n• Smart Assistive Glasses: **12,999 EGP**\n• Smart Bracelet: **2,499 EGP**\n• Mobile app: **Free** (iOS & Android)\n• Shipping in Egypt: **50 EGP**\n\nOpen Shop to order. [open:shop]";
+            ? "💰 أسعار إشارة:\n\n• النظارات الذكية: **١٬٥٠٠ جنيه**\n• السوار الذكي: **٨٠٠ جنيه**\n• التطبيق: **مجاني** (iOS وAndroid)\n• الشحن داخل مصر: **٥٠ جنيهًا**\n\nافتح المتجر للطلب. [open:shop]"
+            : "💰 Ishara Pricing:\n\n• Smart Assistive Glasses: **1,500 EGP**\n• Smart Bracelet: **800 EGP**\n• Mobile app: **Free** (iOS & Android)\n• Shipping in Egypt: **50 EGP**\n\nOpen Shop to order. [open:shop]";
     }
 
     // Glasses / Hardware
